@@ -141,6 +141,22 @@ const fetchTopLanguages = async (
       };
     }, {});
 
+	// Merge SQL and PLSQL into a single combined "Database" entry.
+	if (repoNodes["SQL"] || repoNodes["PLSQL"]) {
+		const sql = repoNodes["SQL"];
+		const plsql = repoNodes["PLSQL"];
+
+		repoNodes["Database"] = {
+		  name: "Database (SQL/PLSQL)",
+		  color: (plsql && plsql.color) || (sql && sql.color) || "#e38c00",
+		  size: (sql ? sql.size : 0) + (plsql ? plsql.size : 0),
+		  count: Math.max(sql ? sql.count : 0, plsql ? plsql.count : 0),
+		};
+
+		delete repoNodes["SQL"];
+		delete repoNodes["PLSQL"];
+	  }
+
   Object.keys(repoNodes).forEach((name) => {
     // comparison index calculation
     repoNodes[name].size =
