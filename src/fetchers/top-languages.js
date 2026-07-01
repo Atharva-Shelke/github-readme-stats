@@ -148,7 +148,7 @@ const fetchTopLanguages = async (
 
     repoNodes["Database"] = {
       name: "Database (SQL/PLSQL)",
-      color: "#0bb302",
+      color: (sql && sql.color) || "#0bb302",
       size: (sql ? sql.size : 0) + (plsql ? plsql.size : 0),
       count: Math.max(sql ? sql.count : 0, plsql ? plsql.count : 0),
     };
