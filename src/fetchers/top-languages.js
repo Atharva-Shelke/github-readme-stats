@@ -157,6 +157,26 @@ const fetchTopLanguages = async (
     delete repoNodes["PLSQL"];
   }
 
+  // Merge TypeScript and JavaScript into a single combined "Scripts" entry.
+  if (repoNodes["TypeScript"] || repoNodes["JavaScript"]) {
+    const typescript = repoNodes["TypeScript"];
+    const javascript = repoNodes["JavaScript"];
+
+    repoNodes["Scripts"] = {
+      name: "Scripts (TypeScript/JavaScript)",
+      color: (typescript && typescript.color) || "#3178c6",
+      size:
+        (typescript ? typescript.size : 0) + (javascript ? javascript.size : 0),
+      count: Math.max(
+        typescript ? typescript.count : 0,
+        javascript ? javascript.count : 0,
+      ),
+    };
+
+    delete repoNodes["TypeScript"];
+    delete repoNodes["JavaScript"];
+  }
+
   Object.keys(repoNodes).forEach((name) => {
     // comparison index calculation
     repoNodes[name].size =
